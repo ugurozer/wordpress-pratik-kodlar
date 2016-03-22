@@ -1,0 +1,52 @@
+Kategori yazısı çekme;
+<?php query_posts(‘showposts=4&orderby=date&cat=1’); ?>
+<?php while (have_posts()) : the_post(); ?>
+<h3><?php the_title(); ?></h3>
+<a href="<?php the_permalink(); ?>"><?php the_content(); ?><?php the_excerpt(); ?></a>
+<?php endwhile; ?>
+<?php wp_reset_query(); ?>
+
+
+
+Sayfa içeriği çekme;
+<?php query_posts(‘page_id=39’); ?>
+<?php while (have_posts()) : the_post(); ?>
+<h3><?php the_title(); ?></h3>
+<a href="<?php the_permalink(); ?>"><?php the_content(); ?><?php the_excerpt(); ?></a>
+<?php endwhile; ?>
+<?php wp_reset_query(); ?>
+
+
+Sayfa linki;
+<?php echo get_page_link(2); ?>
+
+
+Kategori linki;
+<?php $category_id = get_cat_ID( ‘Kategori Adı’ ); $category_link = get_category_link( $category_id ); ?>
+<?php echo esc_url( $category_link ); ?>
+
+
+Thumnail class dahil
+<?php the_post_thumbnail( ‘full’, array( ‘class’ => ‘img-responsive’ ) ); ?>
+
+
+Basit Masonry
+http://www.bootply.com/6iUzu09puo
+
+
+Basit isotope
+http://codepen.io/ugurozer/pen/WrEbwm
+
+
+Contact Form 7
+<?php echo do_shortcode("[contact-form-7 404 "Not Found"]"); ?>
+
+
+Ana Kategori > Alt Kategorileri listeleme
+<?php $thisCat = get_category( get_query_var( ‘cat’ ) ); while ( intval($thisCat->parent) > 0 ) { $thisCat = get_category ( $thisCat->parent ); } $args=array(‘child_of’ => 0, ‘exclude’ => ‘6,7,1’, ‘orderby’ => ‘name’, ‘order’ => ‘ASC’); $categories=get_categories( $args ); foreach( $categories as $category ) { ?>
+<?php $queried_object = get_queried_object(); $taxonomy = $category->taxonomy; $term_id = $category->term_id; ?>
+<div class="col-md-4 col-sm-6 margin-bottom <?php $yourcat = get_category ($category->category_parent); echo $yourcat->slug; ?>">
+<div class="blocks-frat"> <a href="<?php echo get_category_link( $category->term_id ) ?>"><img src="<?php the_field(‘kategori_one_cikan_resim’, $taxonomy . ‘_’ . $term_id); ?>" alt="<?php echo $category->name ?>" class="img-responsive center-block" /></a> </div>
+<h4 class="subtitle"><a href="<?php echo get_category_link( $category->term_id ) ?>"><?php echo $category->name ?></a></h4>
+</div>
+<?php }; ?>
